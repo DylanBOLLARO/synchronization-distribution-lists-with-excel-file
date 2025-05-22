@@ -18,7 +18,6 @@ export const AuthProvider = ({ children }: any) => {
                     ? `${process.env.NEXT_PUBLIC_NGINX_PREFIX}/user`
                     : '/user'
             )
-            console.log(response)
             const userResponse = await response.text()
             setUser(userResponse ? JSON.parse(userResponse) : null)
         } catch (error) {

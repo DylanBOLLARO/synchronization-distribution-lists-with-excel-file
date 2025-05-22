@@ -38,21 +38,11 @@ app.add_middleware(
 )
 
 
-@app.get("/")
+@app.get("/get-files-in-sharepoint-folder")
 def read_root():
-    files_in_sharepoint = asyncio.run(
+    return asyncio.run(
         get_files_in_sharepoint_folder(credential, graph_scope, ms_config)
     )
-    # print(files_in_sharepoint)
-
-    # [
-    #     print(f)
-    #     for f in files_in_sharepoint
-    #     if "file" in f and f["name"].endswith(".xlsx")
-    # ]
-
-    return {"Hello": "World"}
-
 
 # @app.get("/items/{item_id}")
 # def read_item(item_id: int, q: Union[str, None] = None):
