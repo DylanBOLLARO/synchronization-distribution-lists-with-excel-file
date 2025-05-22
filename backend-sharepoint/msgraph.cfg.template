@@ -1,0 +1,7 @@
+[azure]
+clientId=
+clientSecret=
+tenantId=
+ENDPOINT=https://graph.microsoft.com/v1.0
+graph_scope=https://graph.microsoft.com/.default
+sharepointId=
