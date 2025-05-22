@@ -4,6 +4,7 @@
 /build
 .vscode
 
+aliases-ph-2.xlsx
 # Logs
 logs
 *.log
