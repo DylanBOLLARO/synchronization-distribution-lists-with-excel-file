@@ -8,7 +8,9 @@ export default function RootLayout({
 }>) {
     return (
         <html lang="en">
-            <body className={`antialiased container mx-auto min-h-screen`}>
+            <body
+                className={`antialiased container mx-auto min-h-screen mt-10`}
+            >
                 <AuthProvider>{children}</AuthProvider>
             </body>
         </html>

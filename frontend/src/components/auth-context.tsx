@@ -1,5 +1,6 @@
 'use client'
 
+import axios from 'axios'
 import { createContext, useContext, useEffect, useState } from 'react'
 
 const AuthContext = createContext<any>(undefined)
@@ -7,19 +8,16 @@ const AuthContext = createContext<any>(undefined)
 export const AuthProvider = ({ children }: any) => {
     const [user, setUser] = useState(undefined)
 
-    const isEmpty = (obj: any) => {
-        return Object.keys(obj).length === 0 && obj.constructor === Object
-    }
-
     async function fetchUser() {
         try {
-            const response = await fetch(
+            const response = axios.get(
                 process.env.NODE_ENV === 'production'
                     ? `${process.env.NEXT_PUBLIC_NGINX_PREFIX}/user`
                     : '/user'
             )
-            const userResponse = await response.text()
-            setUser(userResponse ? JSON.parse(userResponse) : null)
+
+            const userResponse = (await response).data ?? null
+            if (userResponse) setUser(JSON.parse(userResponse))
         } catch (error) {
             console.error(error)
         }
@@ -33,7 +31,6 @@ export const AuthProvider = ({ children }: any) => {
         <AuthContext.Provider
             value={{
                 user,
-                isEmpty,
                 fetchUser,
             }}
         >
