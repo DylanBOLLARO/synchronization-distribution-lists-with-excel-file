@@ -1,4 +1,5 @@
 import AuthProvider from '@/components/auth-context'
+import { Header } from '@/components/header'
 import './globals.css'
 
 export default function RootLayout({
@@ -9,9 +10,14 @@ export default function RootLayout({
     return (
         <html lang="en">
             <body
-                className={`antialiased container mx-auto min-h-screen mt-10`}
+                className={`antialiased container mx-auto min-h-screen mt-10 mb-96`}
             >
-                <AuthProvider>{children}</AuthProvider>
+                <AuthProvider>
+                    <div className="flex flex-col gap-3">
+                        <Header />
+                        {children}
+                    </div>
+                </AuthProvider>
             </body>
         </html>
     )

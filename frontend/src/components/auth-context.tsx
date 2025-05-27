@@ -6,7 +6,7 @@ import { createContext, useContext, useEffect, useState } from 'react'
 const AuthContext = createContext<any>(undefined)
 
 export const AuthProvider = ({ children }: any) => {
-    const [user, setUser] = useState(undefined)
+    const [user, setUser] = useState<any>(undefined)
 
     async function fetchUser() {
         try {
@@ -15,10 +15,10 @@ export const AuthProvider = ({ children }: any) => {
                     ? `${process.env.NEXT_PUBLIC_NGINX_PREFIX}/user`
                     : '/user'
             )
-
-            const userResponse = (await response).data ?? null
-            if (userResponse) setUser(JSON.parse(userResponse))
+            const userResponse = (await response)?.data ?? null
+            setUser(userResponse)
         } catch (error) {
+            setUser(null)
             console.error(error)
         }
     }
