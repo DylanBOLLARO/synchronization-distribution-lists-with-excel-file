@@ -1,9 +1,13 @@
 import { Injectable, OnModuleInit } from '@nestjs/common'
+import { PrismaBetterSQLite3 } from '@prisma/adapter-better-sqlite3'
 import { PrismaClient } from '@prisma/client'
 
 @Injectable()
 export class PrismaService extends PrismaClient implements OnModuleInit {
-    async onModuleInit() {
-        await this.$connect()
+    onModuleInit() {
+        const adapter = new PrismaBetterSQLite3({
+            url: 'file:./prisma/dev.db',
+        })
+        new PrismaClient({ adapter })
     }
 }
