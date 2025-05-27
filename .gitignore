@@ -62,3 +62,5 @@ __pycache__
 **/node_modules
 backend-auth/prisma/dev.db
 backend-auth/prisma/dev.db-journal
+
+**.xlsx
