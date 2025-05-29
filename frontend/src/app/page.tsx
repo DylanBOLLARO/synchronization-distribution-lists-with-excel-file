@@ -184,21 +184,31 @@ export default function Home() {
                             <>
                                 <li className="list-row alert alert-error">
                                     <div>
-                                        <div className="text-xl font-semibold">
-                                            {sheet}
+                                        <div className="flex gap-2">
+                                            <p className="text-md uppercase font-black">
+                                                Sheet :
+                                            </p>
+                                            <p className="text-md  font-semibold">{`${sheet}`}</p>
                                         </div>
+
                                         {Object.entries(aliasDict).map(
                                             (aliasd) => {
                                                 const [alias, message] = aliasd
                                                 return (
                                                     <>
-                                                        <div className="text-md uppercase font-semibold">
-                                                            {alias}
+                                                        <div className="flex gap-2">
+                                                            <p className="text-md uppercase font-black">
+                                                                Alias :
+                                                            </p>
+                                                            <p className="text-md  font-semibold">{`${alias}`}</p>
                                                         </div>
 
-                                                        <p className="list-col-wrap text-md font-semibold">
-                                                            {message}
-                                                        </p>
+                                                        <div className="flex gap-2">
+                                                            <p className="text-md uppercase font-black">
+                                                                Error :
+                                                            </p>
+                                                            <p className="text-md  font-semibold">{`${message}`}</p>
+                                                        </div>
                                                     </>
                                                 )
                                             }
