@@ -170,17 +170,46 @@ export default function Home() {
                         </div>
                     )
                 })}
-                {files.sheetInformation === undefined && (
-                    <span className="mx-auto loading loading-spinner loading-xl" />
-                )}
-                {files.sheetInformation && (
-                    <pre>
-                        <code>
-                            {JSON.stringify(files.sheetInformation, null, 4)}
-                        </code>
-                    </pre>
-                )}
             </div>
+
+            {files.sheetInformation === undefined && (
+                <span className="mx-auto loading loading-spinner loading-xl" />
+            )}
+
+            {files.sheetInformation && (
+                <ul className="list bg-base-100 rounded-box shadow-md">
+                    {Object.entries(files.sheetInformation).map((dict) => {
+                        const [sheet, aliasDict] = dict
+                        return (
+                            <>
+                                <li className="list-row alert alert-error">
+                                    <div>
+                                        <div className="text-xl font-semibold">
+                                            {sheet}
+                                        </div>
+                                        {Object.entries(aliasDict).map(
+                                            (aliasd) => {
+                                                const [alias, message] = aliasd
+                                                return (
+                                                    <>
+                                                        <div className="text-md uppercase font-semibold">
+                                                            {alias}
+                                                        </div>
+
+                                                        <p className="list-col-wrap text-md font-semibold">
+                                                            {message}
+                                                        </p>
+                                                    </>
+                                                )
+                                            }
+                                        )}
+                                    </div>
+                                </li>
+                            </>
+                        )
+                    })}
+                </ul>
+            )}
 
             {/* <button
                 onClick={getInformationofExcelFileById}
