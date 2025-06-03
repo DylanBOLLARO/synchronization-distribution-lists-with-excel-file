@@ -5,6 +5,7 @@ import { AppController } from './app.controller'
 import { AuthModule } from './auth/auth.module'
 import { PrismaModule } from './prisma/prisma.module'
 import { PrismaService } from './prisma/prisma.service'
+import { ProgressModule } from './progress/progress.module'
 
 @Module({
     imports: [
@@ -14,6 +15,7 @@ import { PrismaService } from './prisma/prisma.service'
         }),
         AuthModule,
         PrismaModule,
+        ProgressModule,
     ],
     controllers: [AppController],
     providers: [PrismaService],

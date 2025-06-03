@@ -6,6 +6,6 @@ export class AppController {
     constructor(private readonly prismaService: PrismaService) {}
     @Get()
     async getHello() {
-        return await this.prismaService.user.findMany()
+        return await this.prismaService.progress.findMany()
     }
 }
