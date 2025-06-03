@@ -1,4 +1,5 @@
 from configparser import ConfigParser
+import time
 from typing import Optional
 import pandas as pd
 
@@ -7,6 +8,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from msgraph import GraphServiceClient
 from pydantic import ValidationError
+import requests
 
 from graph import downloading_excel_files_from_sharepoint, old_get_files_in_sharepoint_folder
 from utils import harmonize_dict_keys
@@ -86,3 +88,21 @@ async def sheet_information(id: Optional[str] = None):
                     loc = " -> ".join(str(l) for l in error['loc'])
                     errors[sheet][row["alias"]].append(f"{loc} : {error['msg']}")
     return errors
+
+@app.post("/synchronization")
+async def synchronization():
+    progress = requests.post("http://localhost:3001/progress")
+    
+    if not progress:
+        return
+    
+    progress = progress.json()
+    
+    for i in range(10):
+        payload = {'progress': ((i+1)*10)}
+        requests.patch(f"http://localhost:3001/progress/{progress["id"]}", data=payload)
+        time.sleep(2)
+        
+    payload = {"status": 'COMPLETED'}
+    requests.patch(f"http://localhost:3001/progress/{progress["id"]}", data=payload)
+        

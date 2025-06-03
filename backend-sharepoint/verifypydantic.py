@@ -19,3 +19,12 @@ class User(BaseModel):
             except ValueError:
                 raise ValueError(f"Invalid email: {email}")
         return v
+    
+    @field_validator('alias')
+    @classmethod
+    def should_be_email(cls, v: str) -> str:
+        try:
+            validate_email(v)
+        except ValueError:
+            raise ValueError(f"Invalid email: {v}")
+        return v
