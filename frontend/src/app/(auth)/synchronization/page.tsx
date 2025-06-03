@@ -141,9 +141,7 @@ export default function Page() {
                                                 ).id
                                             )
 
-                                        // TODO if (res) instead of if (!res)
-
-                                        if (!res) {
+                                        if (res) {
                                             setFiles((prev: any) => ({
                                                 ...prev,
                                                 sheetInformation: res,
