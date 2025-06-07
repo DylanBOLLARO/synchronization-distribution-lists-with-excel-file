@@ -1,4 +1,3 @@
-import { Header } from '@/components/header'
 import { Providers } from '@/components/providers'
 import './globals.css'
 
@@ -10,14 +9,9 @@ export default function RootLayout({
     return (
         <html lang="en">
             <body
-                className={`antialiased container mx-auto min-h-screen mt-10 mb-96`}
+                className={`flex flex-col antialiased container mx-auto min-h-screen px-2`}
             >
-                <Providers>
-                    <div className="flex flex-col gap-3">
-                        <Header />
-                        {children}
-                    </div>
-                </Providers>
+                <Providers>{children}</Providers>
             </body>
         </html>
     )

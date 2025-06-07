@@ -1,13 +1,12 @@
 import { keepPreviousData, useQuery } from '@tanstack/react-query'
-import { getTodos } from './queries-functions'
+import { getCurrentSynchronization } from './queries-functions'
 
-export function useCurrentSynchronization(conf: any) {
+export function useCurrentSynchronization(enabled: boolean) {
     return useQuery({
-        queryKey: ['todos'],
-        // TODO rename function
-        queryFn: async () => await getTodos(),
+        queryKey: ['useCurrentSynchronization'],
+        queryFn: async () => await getCurrentSynchronization(),
         refetchInterval: 2000,
         placeholderData: keepPreviousData,
-        enabled: conf.enable,
+        enabled,
     })
 }

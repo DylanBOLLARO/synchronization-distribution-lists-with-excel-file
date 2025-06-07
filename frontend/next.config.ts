@@ -18,22 +18,22 @@ const nextConfig: NextConfig = {
             ? [
                   {
                       source: '/login',
-                      destination: `${process.env.NEXT_PUBLIC_BACKEND_STUDENT_PORTAL_URL}/login`,
+                      destination: `${process.env.NEXT_PUBLIC_BACKEND_AUTH_URL}/login`,
                       permanent: false,
                   },
                   {
                       source: '/callback',
-                      destination: `${process.env.NEXT_PUBLIC_BACKEND_STUDENT_PORTAL_URL}/callback`,
+                      destination: `${process.env.NEXT_PUBLIC_BACKEND_AUTH_URL}/callback`,
                       permanent: false,
                   },
                   {
                       source: '/user',
-                      destination: `${process.env.NEXT_PUBLIC_BACKEND_STUDENT_PORTAL_URL}/user`,
+                      destination: `${process.env.NEXT_PUBLIC_BACKEND_AUTH_URL}/user`,
                       permanent: false,
                   },
                   {
                       source: '/logout',
-                      destination: `${process.env.NEXT_PUBLIC_BACKEND_STUDENT_PORTAL_URL}/logout`,
+                      destination: `${process.env.NEXT_PUBLIC_BACKEND_AUTH_URL}/logout`,
                       permanent: false,
                   },
               ]
@@ -45,19 +45,19 @@ const nextConfig: NextConfig = {
             : [
                   {
                       source: '/login',
-                      destination: `${process.env.NEXT_PUBLIC_BACKEND_STUDENT_PORTAL_URL}/login`,
+                      destination: `${process.env.NEXT_PUBLIC_BACKEND_AUTH_URL}/login`,
                   },
                   {
                       source: '/callback',
-                      destination: `${process.env.NEXT_PUBLIC_BACKEND_STUDENT_PORTAL_URL}/callback`,
+                      destination: `${process.env.NEXT_PUBLIC_BACKEND_AUTH_URL}/callback`,
                   },
                   {
                       source: '/user',
-                      destination: `${process.env.NEXT_PUBLIC_BACKEND_STUDENT_PORTAL_URL}/user`,
+                      destination: `${process.env.NEXT_PUBLIC_BACKEND_AUTH_URL}/user`,
                   },
                   {
                       source: '/logout',
-                      destination: `${process.env.NEXT_PUBLIC_BACKEND_STUDENT_PORTAL_URL}/logout`,
+                      destination: `${process.env.NEXT_PUBLIC_BACKEND_AUTH_URL}/logout`,
                   },
               ]
     },
