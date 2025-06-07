@@ -57,13 +57,14 @@ async def sheet_information(id: Optional[str] = None):
     await downloading_excel_files_from_sharepoint(id, credential, graph_scope, ms_config)
     
     path = f"./downloaded_files/{id}.xlsx"
-    sheets = sheet_names(path)
+    sheets = [s for s in sheet_names(path) if s not in ["raw_list", "analysis"]]
+    
+    if len(sheets) == 0:
+        return {"Excel":{"File": [f"This file is not valid"]}}
     
     # create one dict with all sheets data
     all_sheets = {}
     for sheet in sheets:
-        if sheet in ["raw_list", "analysis"]:
-            continue
         df = pd.read_excel(path, sheet_name=sheet)
         df = df.fillna("")
         all_sheets[sheet] = df.to_dict('records')
@@ -75,6 +76,7 @@ async def sheet_information(id: Optional[str] = None):
         
         for row in all_sheets[sheet]:
             row = harmonize_dict_keys(row)
+
             try:
                 user = User(**row)
             except ValidationError as e:
@@ -87,7 +89,7 @@ async def sheet_information(id: Optional[str] = None):
                         
                     loc = " -> ".join(str(l) for l in error['loc'])
                     errors[sheet][row["alias"]].append(f"{loc} : {error['msg']}")
-    return errors
+    return errors 
 
 @app.post("/synchronization")
 async def synchronization():
