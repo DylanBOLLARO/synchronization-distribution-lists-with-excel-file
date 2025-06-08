@@ -84,6 +84,9 @@ async def sheet_information(id: Optional[str] = None):
                     if sheet not in errors:
                         errors[sheet] = {}
                         
+                    if "alias" not in row:
+                        return {"Excel":{"File": [f"This file is not valid"]}}
+                    
                     if row["alias"] not in errors[sheet]:
                         errors[sheet][row["alias"]] = []
                         
