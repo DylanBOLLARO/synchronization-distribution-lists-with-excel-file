@@ -192,7 +192,11 @@ export default function Page() {
                             {Object.keys(sheetInformation)?.length == 0 && (
                                 <button
                                     className="btn text-base-content/75"
-                                    onClick={startSynchronization}
+                                    onClick={async () =>
+                                        startSynchronization(
+                                            currentSelectedSharepointFile.id
+                                        )
+                                    }
                                 >
                                     Start Synchronization
                                 </button>

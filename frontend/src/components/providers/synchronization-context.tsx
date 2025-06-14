@@ -56,10 +56,16 @@ export const SynchronizationProvider = ({ children }: any) => {
         ).data
     }
 
-    async function startSynchronization() {
+    async function startSynchronization(id: string) {
         try {
             axios.post(
-                `${process.env.NEXT_PUBLIC_BACKEND_SHAREPOINT_URL}/synchronization`
+                `${process.env.NEXT_PUBLIC_BACKEND_SHAREPOINT_URL}/synchronization`,
+                null,
+                {
+                    params: {
+                        id,
+                    },
+                }
             )
             setEnableAutoRefreshCurrentSynchronization(true)
         } catch (error) {
