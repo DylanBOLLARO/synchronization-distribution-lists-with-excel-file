@@ -3,7 +3,8 @@
 import { Loading } from '@/components/loading'
 import { useSynchronization } from '@/components/providers'
 import { RadialProgress } from '@/components/radial-progress'
-import { cn } from '@/lib/utils'
+import { cn, estimateEndTime } from '@/lib/utils'
+import { format } from 'date-fns'
 
 export default function Page() {
     const {
@@ -18,7 +19,106 @@ export default function Page() {
     } = useSynchronization()
 
     if (currentSynchronization) {
-        return <RadialProgress progressTick={currentSynchronization.progress} />
+        return (
+            <div className="border-2 border-base-300 rounded py-5">
+                <div className="flex justify-center items-center">
+                    <h2 className="text-xl font-semibold text-base-content/75">
+                        Progress
+                    </h2>
+                </div>
+                <div className="divider"></div>
+                <div className="flex">
+                    <RadialProgress
+                        progressTick={currentSynchronization.progress}
+                    />
+                    <div className="flex-1 flex-col flex gap-5">
+                        <p className="badge badge-xl badge-info badge-soft">
+                            <svg
+                                className="size-[1em]"
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 24 24"
+                            >
+                                <g
+                                    fill="currentColor"
+                                    strokeLinejoin="miter"
+                                    strokeLinecap="butt"
+                                >
+                                    <circle
+                                        cx="12"
+                                        cy="12"
+                                        r="10"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        strokeLinecap="square"
+                                        stroke-miterlimit="10"
+                                        strokeWidth="2"
+                                    ></circle>
+                                    <path
+                                        d="m12,17v-5.5c0-.276-.224-.5-.5-.5h-1.5"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        strokeLinecap="square"
+                                        stroke-miterlimit="10"
+                                        strokeWidth="2"
+                                    ></path>
+                                    <circle
+                                        cx="12"
+                                        cy="7.25"
+                                        r="1.25"
+                                        fill="currentColor"
+                                        strokeWidth="2"
+                                    ></circle>
+                                </g>
+                            </svg>
+                            {`Start at ${format(currentSynchronization.createdAt, 'hh:mm a')}`}
+                        </p>
+                        <p className="badge badge-xl badge-success badge-soft">
+                            <svg
+                                className="size-[1em]"
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 24 24"
+                            >
+                                <g
+                                    fill="currentColor"
+                                    strokeLinejoin="miter"
+                                    strokeLinecap="butt"
+                                >
+                                    <circle
+                                        cx="12"
+                                        cy="12"
+                                        r="10"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        strokeLinecap="square"
+                                        stroke-miterlimit="10"
+                                        strokeWidth="2"
+                                    ></circle>
+                                    <path
+                                        d="m12,17v-5.5c0-.276-.224-.5-.5-.5h-1.5"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        strokeLinecap="square"
+                                        stroke-miterlimit="10"
+                                        strokeWidth="2"
+                                    ></path>
+                                    <circle
+                                        cx="12"
+                                        cy="7.25"
+                                        r="1.25"
+                                        fill="currentColor"
+                                        strokeWidth="2"
+                                    ></circle>
+                                </g>
+                            </svg>
+                            {`Will end around ${format(
+                                estimateEndTime(currentSynchronization),
+                                'hh:mm a'
+                            )}`}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        )
     }
 
     return (
