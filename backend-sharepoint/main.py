@@ -1,6 +1,4 @@
 from configparser import ConfigParser
-import time
-from typing import Optional
 import pandas as pd
 
 from azure.identity.aio import ClientSecretCredential
@@ -9,6 +7,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from msgraph import GraphServiceClient
 from pydantic import ValidationError
 import requests
+from dotenv import dotenv_values
 
 from graph import downloading_excel_files_from_sharepoint, old_get_files_in_sharepoint_folder
 from utils import harmonize_dict_keys
@@ -25,10 +24,14 @@ name_downloaded_files = "downloaded_files"
 name_uploaded_files = "generated_excel"
 path_uploaded_files = f"./{name_uploaded_files}/"
 
+config = dotenv_values(".env")
+
 credential = ClientSecretCredential(tenant_id, client_id, client_secret)
 client = GraphServiceClient(credentials=credential, scopes=[graph_scope])
 
 app = FastAPI()
+
+SHEETS_TO_IGNORE = ["raw_list", "analysis"]
 
 origins = [
     "http://localhost:3000",
@@ -53,11 +56,11 @@ def sheet_names(path):
 
 
 @app.post("/sheet-information")
-async def sheet_information(id: Optional[str] = None):
+async def sheet_information(id: str):
     await downloading_excel_files_from_sharepoint(id, credential, graph_scope, ms_config)
     
     path = f"./downloaded_files/{id}.xlsx"
-    sheets = [s for s in sheet_names(path) if s not in ["raw_list", "analysis"]]
+    sheets = [sheet for sheet in sheet_names(path) if sheet not in SHEETS_TO_IGNORE]
     
     if len(sheets) == 0:
         return {"Excel":{"File": [f"This file is not valid"]}}
@@ -95,7 +98,29 @@ async def sheet_information(id: Optional[str] = None):
     return errors 
 
 @app.post("/synchronization")
-async def synchronization():
+async def synchronization(id: str):
+    if not id:
+        return
+    
+    path = f"./downloaded_files/{id}.xlsx"
+    sheets = [sheet for sheet in sheet_names(path) if sheet not in SHEETS_TO_IGNORE]
+    
+    if len(sheets) == 0:
+        return
+    
+    # create one dict with all sheets data
+    all_aliases = []
+
+    for sheet in sheets:
+        df = pd.read_excel(path, sheet_name=sheet)
+        df = df.fillna("")
+        records = df.to_dict('records')
+        all_aliases.extend(records)
+        
+    all_aliases = [harmonize_dict_keys(alias) for alias in all_aliases]
+
+    # create progress
+    # TODO remove localhost
     progress = requests.post("http://localhost:3001/progress")
     
     if not progress:
@@ -103,11 +128,25 @@ async def synchronization():
     
     progress = progress.json()
     
-    for i in range(10):
-        payload = {'progress': ((i+1)*10)}
-        requests.patch(f"http://localhost:3001/progress/{progress["id"]}", data=payload)
-        time.sleep(2)
+    headers = {'X-API-KEY': config["X-API-KEY"]}
+    
+    for index, alias in enumerate(all_aliases):
+        # update progress
+        if index % 2 == 0:
+            percentage = int((index + 1) / len(all_aliases) * 100)
+            # TODO remove localhost
+            requests.patch(f"http://localhost:3001/progress/{progress["id"]}", data={'progress': percentage})
+            
+        payload = {
+            "alias": alias["alias"].split("@")[0],
+            "emails": alias["members"].replace(";",","),
+            "displayName":alias["display_name"],
+            "owners":alias["owners"].replace(";",",")
+        }
         
-    payload = {"status": 'COMPLETED'}
-    requests.patch(f"http://localhost:3001/progress/{progress["id"]}", data=payload)
+        # TODO remove localhost
+        r = requests.post(f"https://localhost:3010/groups/synchronise-with-excel-file", data=payload, verify=False,headers=headers)
+        print(r.text)
+    # TODO remove localhost
+    requests.patch(f"http://localhost:3001/progress/{progress["id"]}", data={"status": 'COMPLETED'})
         
