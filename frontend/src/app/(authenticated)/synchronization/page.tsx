@@ -110,10 +110,9 @@ export default function Page() {
                                     ></circle>
                                 </g>
                             </svg>
-                            {`Will end around ${format(
-                                estimateEndTime(currentSynchronization),
-                                'hh:mm a'
-                            )}`}
+                            {currentSynchronization.progress >= 2
+                                ? `Will end around ${format(estimateEndTime(currentSynchronization), 'hh:mm a')}`
+                                : 'Unable to define an approximate time at the moment'}
                         </p>
                     </div>
                 </div>

@@ -1,0 +1,7 @@
+__pycache__
+.venv
+.vscode
+downloaded_files
+.env
+aliases-ph-2.xlsx
+msgraph.cfg.template

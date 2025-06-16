@@ -19,22 +19,22 @@ const nextConfig: NextConfig = {
                   {
                       source: '/login',
                       destination: `${process.env.NEXT_PUBLIC_BACKEND_AUTH_URL}/login`,
-                      permanent: false,
+                      permanent: true,
                   },
                   {
                       source: '/callback',
                       destination: `${process.env.NEXT_PUBLIC_BACKEND_AUTH_URL}/callback`,
-                      permanent: false,
+                      permanent: true,
                   },
                   {
                       source: '/user',
                       destination: `${process.env.NEXT_PUBLIC_BACKEND_AUTH_URL}/user`,
-                      permanent: false,
+                      permanent: true,
                   },
                   {
                       source: '/logout',
                       destination: `${process.env.NEXT_PUBLIC_BACKEND_AUTH_URL}/logout`,
-                      permanent: false,
+                      permanent: true,
                   },
               ]
             : []

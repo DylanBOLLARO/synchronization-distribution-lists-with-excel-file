@@ -1,0 +1,34 @@
+services:
+    frontend:
+        container_name: frontend
+        build:
+            no_cache: true
+            context: frontend
+            args:
+                NEXT_PUBLIC_BACKEND_AUTH_URL: ${NEXT_PUBLIC_BACKEND_AUTH_URL}
+                NEXT_PUBLIC_BACKEND_SHAREPOINT_URL: ${NEXT_PUBLIC_BACKEND_SHAREPOINT_URL}
+        restart: unless-stopped
+    backend-auth:
+        container_name: backend-auth
+        build:
+            no_cache: true
+            context: backend-auth
+        env_file:
+            - .env
+        restart: unless-stopped
+    backend-sharepoint:
+        container_name: backend-sharepoint
+        build:
+            no_cache: true
+            context: backend-sharepoint
+        env_file:
+            - .env
+        restart: unless-stopped
+    nginx:
+        container_name: nginx
+        image: nginx:1.28.0
+        volumes:
+            - ./nginx:/etc/nginx/conf.d/
+        restart: unless-stopped
+        ports:
+            - "3085:80"

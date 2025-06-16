@@ -33,9 +33,8 @@ app = FastAPI()
 
 SHEETS_TO_IGNORE = ["raw_list", "analysis"]
 
-origins = [
-    "http://localhost:3000",
-]
+domain_name = config.get("DOMAIN_NAME") if config else None
+origins = [domain_name] if domain_name else []
 
 app.add_middleware(
     CORSMiddleware,
@@ -120,8 +119,7 @@ async def synchronization(id: str):
     all_aliases = [harmonize_dict_keys(alias) for alias in all_aliases]
 
     # create progress
-    # TODO remove localhost
-    progress = requests.post("http://localhost:3001/progress")
+    progress = requests.post(f"{config.get('NEXT_PUBLIC_BACKEND_AUTH_URL')}/progress")
     
     if not progress:
         return
@@ -134,8 +132,7 @@ async def synchronization(id: str):
         # update progress
         if index % 2 == 0:
             percentage = int((index + 1) / len(all_aliases) * 100)
-            # TODO remove localhost
-            requests.patch(f"http://localhost:3001/progress/{progress["id"]}", data={'progress': percentage})
+            requests.patch(f"{config.get('NEXT_PUBLIC_BACKEND_AUTH_URL')}/progress/{progress['id']}", data={'progress': percentage})
             
         payload = {
             "alias": alias["alias"].split("@")[0],
@@ -143,10 +140,7 @@ async def synchronization(id: str):
             "displayName":alias["display_name"],
             "owners":alias["owners"].replace(";",",")
         }
-        
-        # TODO remove localhost
-        r = requests.post(f"https://localhost:3010/groups/synchronise-with-excel-file", data=payload, verify=False,headers=headers)
+        r = requests.post(f"{config.get('POWERSHELL_URL')}/groups/synchronise-with-excel-file", data=payload, verify=False,headers=headers)
         print(r.text)
-    # TODO remove localhost
-    requests.patch(f"http://localhost:3001/progress/{progress["id"]}", data={"status": 'COMPLETED'})
+    requests.patch(f"{config.get('NEXT_PUBLIC_BACKEND_AUTH_URL')}/progress/{progress['id']}", data={"status": 'COMPLETED'})
         
