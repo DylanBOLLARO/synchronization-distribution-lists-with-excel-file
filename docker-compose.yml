@@ -8,6 +8,8 @@ services:
                 NEXT_PUBLIC_BACKEND_AUTH_URL: ${NEXT_PUBLIC_BACKEND_AUTH_URL}
                 NEXT_PUBLIC_BACKEND_SHAREPOINT_URL: ${NEXT_PUBLIC_BACKEND_SHAREPOINT_URL}
         restart: unless-stopped
+        networks:
+            - toolbox
     backend-auth:
         container_name: backend-auth
         build:
@@ -16,6 +18,8 @@ services:
         env_file:
             - .env
         restart: unless-stopped
+        networks:
+            - toolbox
     backend-sharepoint:
         container_name: backend-sharepoint
         build:
@@ -24,6 +28,9 @@ services:
         env_file:
             - .env
         restart: unless-stopped
+        networks:
+            - toolbox
+            - azure_internal
     nginx:
         container_name: nginx
         image: nginx:1.28.0
@@ -32,3 +39,18 @@ services:
         restart: unless-stopped
         ports:
             - "3085:80"
+        networks:
+            - toolbox
+
+networks:
+    toolbox:
+        name: toolbox
+        driver: bridge
+        enable_ipv6: false
+        ipam:
+            driver: default
+            config:
+                - subnet: 172.31.9.0/24
+    azure_internal:
+        external: true
+        name: azure_internal
