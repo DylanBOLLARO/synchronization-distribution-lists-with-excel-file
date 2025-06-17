@@ -1,5 +1,6 @@
 from configparser import ConfigParser
 import pandas as pd
+import os
 
 from azure.identity.aio import ClientSecretCredential
 from fastapi import FastAPI
@@ -7,7 +8,6 @@ from fastapi.middleware.cors import CORSMiddleware
 from msgraph import GraphServiceClient
 from pydantic import ValidationError
 import requests
-from dotenv import dotenv_values
 
 from graph import downloading_excel_files_from_sharepoint, old_get_files_in_sharepoint_folder
 from utils import harmonize_dict_keys
@@ -24,7 +24,7 @@ name_downloaded_files = "downloaded_files"
 name_uploaded_files = "generated_excel"
 path_uploaded_files = f"./{name_uploaded_files}/"
 
-config = dotenv_values(".env")
+config = os.environ
 
 credential = ClientSecretCredential(tenant_id, client_id, client_secret)
 client = GraphServiceClient(credentials=credential, scopes=[graph_scope])
