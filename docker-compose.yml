@@ -1,6 +1,6 @@
 services:
     frontend:
-        container_name: frontend
+        container_name: ulysseus-toolbox-frontend
         build:
             no_cache: true
             context: frontend
@@ -9,9 +9,9 @@ services:
                 NEXT_PUBLIC_BACKEND_SHAREPOINT_URL: ${NEXT_PUBLIC_BACKEND_SHAREPOINT_URL}
         restart: unless-stopped
         networks:
-            - toolbox
+            - ulysseus_toolbox
     backend-auth:
-        container_name: backend-auth
+        container_name: ulysseus-toolbox-backend-auth
         build:
             no_cache: true
             context: backend-auth
@@ -19,9 +19,9 @@ services:
             - .env
         restart: unless-stopped
         networks:
-            - toolbox
+            - ulysseus_toolbox
     backend-sharepoint:
-        container_name: backend-sharepoint
+        container_name: ulysseus-toolbox-backend-sharepoint
         build:
             no_cache: true
             context: backend-sharepoint
@@ -29,10 +29,10 @@ services:
             - .env
         restart: unless-stopped
         networks:
-            - toolbox
+            - ulysseus_toolbox
             - azure_internal
     nginx:
-        container_name: nginx
+        container_name: ulysseus-toolbox-nginx
         image: nginx:1.28.0
         volumes:
             - ./nginx:/etc/nginx/conf.d/
@@ -40,11 +40,11 @@ services:
         ports:
             - "3085:80"
         networks:
-            - toolbox
+            - ulysseus_toolbox
 
 networks:
-    toolbox:
-        name: toolbox
+    ulysseus_toolbox:
+        name: ulysseus_toolbox
         driver: bridge
         enable_ipv6: false
         ipam:
