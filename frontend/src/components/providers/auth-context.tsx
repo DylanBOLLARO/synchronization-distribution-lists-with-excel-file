@@ -10,10 +10,10 @@ export const AuthProvider = ({ children }: any) => {
 
     async function fetchUser() {
         try {
-            // TODO  if needed prefix to deploy frontend in prod
             const response = axios.get(
-                // ? `${process.env.NEXT_PUBLIC_NGINX_PREFIX}/user`
-                process.env.NODE_ENV === 'production' ? `/user` : '/user'
+                process.env.NODE_ENV === 'production'
+                    ? `${process.env.NEXT_PUBLIC_BACKEND_AUTH_URL}/user`
+                    : '/user'
             )
             const userResponse = (await response)?.data ?? null
             setUser(userResponse)

@@ -1,5 +1,6 @@
 'use client'
 
+import { getLocalImagePath } from '@/lib/utils'
 import { useRouter } from 'next/navigation'
 
 export default function Page() {
@@ -15,7 +16,7 @@ export default function Page() {
             >
                 <img
                     className="mask mask-squircle w-36"
-                    src="/synchronization.jpg"
+                    src={getLocalImagePath('/synchronization.jpg')}
                 />
                 Synchronization
             </button>

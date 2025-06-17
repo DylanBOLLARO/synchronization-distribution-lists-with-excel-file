@@ -16,3 +16,8 @@ export function estimateEndTime(task: any): any {
     const remainingTime = estimatedTotalTime - elapsedTime
     return new Date(currentTime.getTime() + remainingTime)
 }
+
+export const getLocalImagePath = (path: string): string => {
+    const isProd = process.env.NODE_ENV === 'production'
+    return `${isProd ? '/toolbox' : ''}${path}`
+}
