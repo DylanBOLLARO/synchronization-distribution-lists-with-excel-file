@@ -1,14 +1,4 @@
-import {
-    Body,
-    Controller,
-    Get,
-    Param,
-    ParseIntPipe,
-    Patch,
-    Post,
-    Query,
-} from '@nestjs/common'
-import { CreateProgressDto } from './dto/create-progress.dto'
+import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common'
 import { ProgressService } from './progress.service'
 
 @Controller('progress')
@@ -16,8 +6,8 @@ export class ProgressController {
     constructor(private readonly progressService: ProgressService) {}
 
     @Post()
-    async create(@Body() createProgressDto: CreateProgressDto) {
-        return await this.progressService.create(createProgressDto)
+    async create() {
+        return await this.progressService.create()
     }
 
     @Get('get-current-progress')

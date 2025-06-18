@@ -1,14 +1,11 @@
-import { Injectable } from '@nestjs/common'
-import { randomInt } from 'crypto'
+import { HttpStatus, Injectable } from '@nestjs/common'
 import { PrismaService } from '../prisma/prisma.service'
-import { CreateProgressDto } from './dto/create-progress.dto'
-import { UpdateProgressDto } from './dto/update-progress.dto'
 
 @Injectable()
 export class ProgressService {
     constructor(private readonly prismaService: PrismaService) {}
 
-    async create(createProgressDto: CreateProgressDto) {
+    async create() {
         return await this.prismaService.progress.create({
             data: {
                 description: 'Téléchargement des données initiales',
@@ -27,7 +24,13 @@ export class ProgressService {
             },
         })
 
-        if (inProgress.length === 0 || inProgress.length > 1) {
+        if (inProgress.length === 0) {
+            console.log('No currently progress', HttpStatus.BAD_REQUEST)
+            return null
+        }
+
+        if (inProgress.length > 1) {
+            console.log('To many progress', HttpStatus.BAD_REQUEST)
             return null
         }
 
