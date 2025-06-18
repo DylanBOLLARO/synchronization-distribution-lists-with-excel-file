@@ -122,7 +122,7 @@ async def synchronization(id: str):
 
     try:
         url = "http://ulysseus-toolbox-nginx/toolbox/backend/progress"
-        requests.request("POST", url)
+        process = requests.request("POST", url)
         
         if not process:
             raise Exception()
