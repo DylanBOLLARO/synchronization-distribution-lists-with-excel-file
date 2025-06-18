@@ -118,10 +118,16 @@ async def synchronization(id: str):
         
     all_aliases = [harmonize_dict_keys(alias) for alias in all_aliases]
 
-    # create progress
-    progress = requests.post(f"{config.get('NEXT_PUBLIC_BACKEND_AUTH_URL')}/progress")
-    
-    if not progress:
+    progress = None
+
+    try:
+        url = "http://ulysseus-toolbox-nginx/toolbox/backend/progress"
+        requests.request("POST", url)
+        
+        if not process:
+            raise Exception()
+    except:
+        print("Unable to create a new process")
         return
     
     progress = progress.json()
@@ -140,7 +146,15 @@ async def synchronization(id: str):
             "displayName":alias["display_name"],
             "owners":alias["owners"].replace(";",",")
         }
-        r = requests.post(f"{config.get('POWERSHELL_URL')}/groups/synchronise-with-excel-file", data=payload, verify=False,headers=headers)
-        print(r.text)
-    requests.patch(f"{config.get('NEXT_PUBLIC_BACKEND_AUTH_URL')}/progress/{progress['id']}", data={"status": 'COMPLETED'})
-        
+
+        try:
+            r = requests.post(f"{config.get('POWERSHELL_URL')}/groups/synchronise-with-excel-file", data=payload, verify=False, headers=headers)
+            if not r.text:
+                raise Exception("no data returned from nestjs during synchronise-with-excel-file process")
+        except:
+            print("synchronise-with-excel-file error")
+
+    try:
+        requests.patch(f"{config.get('NEXT_PUBLIC_BACKEND_AUTH_URL')}/progress/{progress['id']}", data={"status": 'COMPLETED'})
+    except:
+        print("Error during setting process as completed")
