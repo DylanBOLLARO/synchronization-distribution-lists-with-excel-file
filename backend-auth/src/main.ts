@@ -1,10 +1,10 @@
 // src : https://sdoxsee.github.io/blog/2020/02/05/cats-nest-nestjs-mongo-oidc.html
 
 import { NestFactory } from '@nestjs/core'
-import { AppModule } from './app.module'
+import * as cookieParser from 'cookie-parser'
 import * as session from 'express-session'
 import * as passport from 'passport'
-import * as cookieParser from 'cookie-parser'
+import { AppModule } from './app.module'
 
 async function bootstrap() {
     const app = await NestFactory.create(AppModule)
@@ -13,7 +13,7 @@ async function bootstrap() {
     app.enableCors({
         origin: true,
         credentials: true,
-        methods: ['GET', 'POST'],
+        methods: ['GET', 'POST', 'PATCH'],
     })
 
     // Authentication & Session
