@@ -11,17 +11,12 @@ services:
         extends:
             file: docker-services.yml
             service: backend-sharepoint
-        networks:
-            - azure_internal
     ulysseus-toolbox-nginx:
         extends:
             file: docker-services.yml
             service: nginx
 
 networks:
-    azure_internal:
-        external: true
-        name: azure_internal
     ulysseus_toolbox:
         name: ulysseus_toolbox
         driver: bridge
@@ -29,4 +24,4 @@ networks:
         ipam:
             driver: default
             config:
-                - subnet: 172.31.9.0/16
+                - subnet: 172.31.0.0/16

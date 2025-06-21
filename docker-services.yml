@@ -1,0 +1,51 @@
+services:
+    frontend:
+        container_name: ulysseus-toolbox-frontend
+        build:
+            no_cache: true
+            context: frontend
+            args:
+                NEXT_PUBLIC_BACKEND_AUTH_URL: ${NEXT_PUBLIC_BACKEND_AUTH_URL}
+                NEXT_PUBLIC_BACKEND_SHAREPOINT_URL: ${NEXT_PUBLIC_BACKEND_SHAREPOINT_URL}
+        restart: unless-stopped
+        networks:
+            - ulysseus_toolbox
+        depends_on:
+            ulysseus-toolbox-backend-sharepoint:
+                condition: service_started
+            ulysseus-toolbox-backend-auth:
+                condition: service_started
+    backend-auth:
+        container_name: ulysseus-toolbox-backend-auth
+        build:
+            no_cache: true
+            context: backend-auth
+        env_file:
+            - .env
+        restart: unless-stopped
+        networks:
+            - ulysseus_toolbox
+    backend-sharepoint:
+        container_name: ulysseus-toolbox-backend-sharepoint
+        build:
+            no_cache: true
+            context: backend-sharepoint
+        env_file:
+            - .env
+        restart: unless-stopped
+        networks:
+            - ulysseus_toolbox
+    nginx:
+        container_name: ulysseus-toolbox-nginx
+        image: nginx:1.28.0
+        volumes:
+            - ./nginx:/etc/nginx/conf.d/
+        restart: unless-stopped
+        ports:
+            - "3085:80"
+        networks:
+            - ulysseus_toolbox
+        depends_on:
+            ulysseus-toolbox-frontend:
+                condition: service_started
+                restart: true
