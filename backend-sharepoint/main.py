@@ -34,7 +34,7 @@ app = FastAPI()
 SHEETS_TO_IGNORE = ["raw_list", "analysis"]
 
 domain_name = config.get("DOMAIN_NAME") if config else None
-origins = [domain_name] if domain_name else []
+origins = [domain_name] if domain_name else ["*"]
 
 app.add_middleware(
     CORSMiddleware,
