@@ -11,7 +11,14 @@ export default function RootLayout({
             <body
                 className={`flex flex-col antialiased container mx-auto min-h-screen px-2`}
             >
-                <Providers>{children}</Providers>
+                <div className="flex-1">
+                    <Providers>{children}</Providers>
+                </div>
+                <code>
+                    <pre className="py-10 text-base-content/50">
+                        version:a.1.0
+                    </pre>
+                </code>
             </body>
         </html>
     )
