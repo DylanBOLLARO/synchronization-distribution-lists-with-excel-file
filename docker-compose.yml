@@ -26,7 +26,7 @@ networks:
         ipam:
             driver: default
             config:
-                - subnet: 172.31.0.0/16
+                - subnet: 172.31.9.0/24
     azure_internal:
         external: true
         name: azure_internal
