@@ -19,9 +19,6 @@ services:
             service: nginx
 
 networks:
-    azure_internal:
-        external: true
-        name: azure_internal
     ulysseus_toolbox:
         name: ulysseus_toolbox
         driver: bridge
@@ -29,4 +26,7 @@ networks:
         ipam:
             driver: default
             config:
-                - subnet: 172.31.9.0/16
+                - subnet: 172.31.0.0/16
+    azure_internal:
+        external: true
+        name: azure_internal
